@@ -1,10 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, createContext } from 'react'
 import Header from './components/header/header'
 import List from './components/List/List'
+import './App.css'
+
+export const ThemeContext = createContext(null)
 
 function App() {
 
   const [theme, setTheme] = useState('light');
+
 
   const [todos, setTodos] = useState([
     { id: 1, text: 'Jog around the park 3x', completed: false},
@@ -20,16 +24,6 @@ function App() {
 
   const [filter, setFilter] = useState('all')
 
-  useEffect(() => {
-    console.log(theme);
-    if (theme === 'light') {
-      cssMode.href = './src/light-mode.css'
-    }
-    if (theme === 'dark'){
-      cssMode.href = './src/night-mode.css'
-    }
-  }, [theme])
-
   const handleInputChange = (e) => {
     setInputValue(e.target.value)
   }
@@ -39,8 +33,8 @@ function App() {
       setLastId(lastId + 1)
         const newTodo = { id: lastId + 1, text: inputValue, completed: false }
         setTodos([...todos, newTodo])
+        setInputValue('')
     }
-    setInputValue('')
   }
 
   const handleCheckedOrNot = (e) => {
@@ -62,7 +56,7 @@ function App() {
   }
 
   const handleClearCompleted = () => {
-    console.log('vasy');
+
     const newTodo = todos.filter(todo => {
       return !todo.completed
     })
@@ -73,33 +67,35 @@ function App() {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  const cssMode = document.querySelector('#css')
   const displayAll = () => setFilter('all');
   const displayActive = () => setFilter('active');
   const displayCompleted = () => setFilter('completed');
 
 
   return (
-    <>
-      <Header 
-        inputValue={inputValue} 
-        handleInputChange={handleInputChange} 
-        handleKeyDown={handleKeyDown}
-        theme = {theme}
-        toggleTheme = {toggleTheme}>
-      </Header>
 
-      <List 
-        todos= {todos} 
-        filter= {filter}
-        handleCheckedOrNot={handleCheckedOrNot}
-        handleDelete= {handleDelete}
-        handleClearCompleted = {handleClearCompleted}
-        displayActive = {displayActive}
-        displayAll = {displayAll}
-        displayCompleted = {displayCompleted}
-      />
-    </>
+    <ThemeContext.Provider value={{theme, setTheme}}>
+      <div className="App" id={theme}>
+        <Header 
+          inputValue={inputValue} 
+          handleInputChange={handleInputChange} 
+          handleKeyDown={handleKeyDown}
+          theme = {theme}
+          toggleTheme = {toggleTheme}>
+        </Header>
+
+        <List 
+          todos= {todos} 
+          filter= {filter}
+          handleCheckedOrNot={handleCheckedOrNot}
+          handleDelete= {handleDelete}
+          handleClearCompleted = {handleClearCompleted}
+          displayActive = {displayActive}
+          displayAll = {displayAll}
+          displayCompleted = {displayCompleted}
+        />
+      </div>
+    </ThemeContext.Provider>
   )
 }
 

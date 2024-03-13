@@ -1,5 +1,4 @@
 {
-  "homepage": "https:://damdev94.github.io/todo-list-react",
   "name": "todo-list-react",
   "private": true,
   "version": "0.0.0",
@@ -8,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "deploy": "gh pages -d build"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
